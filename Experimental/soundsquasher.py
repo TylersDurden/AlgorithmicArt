@@ -3,7 +3,7 @@ from scipy.io import wavfile
 import matplotlib.pyplot as plt, matplotlib.animation as animation
 import highspeed_audio_automata
 import numpy as np
-import time
+import time, sys
 
 
 f0 = [[2,2,2,1,2,2],
@@ -20,8 +20,8 @@ f1 = [[1,1,1,1,1],
       [1,1,1,1,1]]
 
 
-def get_song(path_to_song, verbose):
-    cmd = 'cp ' + path_to_song + ' $PWD; ffmpeg -i deify.mp3 song.wav;clear'
+def get_song(path_to_song, song, verbose):
+    cmd = 'cp ' + path_to_song + ' $PWD; ffmpeg -i '+song+' song.wav;clear'
     utility.execute(cmd)
     song_data = wave.open('song.wav')
 
@@ -38,6 +38,12 @@ def get_song(path_to_song, verbose):
         print "Frame Rate: " + str(frame_rate)
 
     return song_data
+
+
+def convert_and_move(path_to_song,song):
+    cmd = 'cp ' + path_to_song + ' $PWD; ffmpeg -i ' + song + ' song.wav;clear'
+    os.system(cmd)
+    os.system('rm '+song)
 
 
 def acquire_song(path_to_song, frame_rate):
@@ -77,8 +83,10 @@ def slow_wav_grab(wave_file):
 
 
 def main():
-
-    acquire_song('sample.wav', 700)
+    if '-demo' in sys.argv:
+        convert_and_move('/media/root/CoopersDB/MUSIC/Disturbed/deify.mp3', 'deify.mp3')
+        acquire_song('song.wav', 700)
+        os.system('rm song.wav')
 
 
 if __name__ == '__main__':
