@@ -1,5 +1,7 @@
+import matplotlib.pyplot as plt
 import numpy as np
 from scipy.io import wavfile
+from scipy import signal
 import os, sys, utility
 
 
@@ -10,9 +12,16 @@ class AudioData:
     data = {}
 
     def __init__(self, path_to_file):
+        try:
+            self.title = path_to_file.split('/')[1]
+            print self.title
+        except IndexError:
+            print "Path to file looks wrong..."
+            print path_to_file
+            exit(0)
         self.source = path_to_file
-        self.title = self.convert_and_move()
         self.data = self.load_audio_data()
+        self.pre_process_audio()
 
     def convert_and_move(self):
         song_name = self.source.split('/')[len(self.source.split('/'))-1]
@@ -47,18 +56,32 @@ class AudioData:
         print "Runtime: " + str(self.data['seconds'])+'s '
         print "Data Shape: "+str(self.data['data'].shape)
 
+    def pre_process_audio(self):
+        ch1 = np.array(self.data['data'][:, 0])
+        ch2 = np.array(self.data['data'][:, 1])
+        mono = np.zeros((ch1.shape[0], 2))
+        mono[:, 0] = ch1
+        mono[:, 1] = ch2
+        print mono.shape
+
+        # Create a sliding buffer of 1s windows
+        buff_sz = 48000
+        N = np.array(mono).shape[0]/buff_sz
+        print N
+
+
 
 def main():
     if '-demo' in sys.argv:
         # Determine initial Memory Overhead
         mem_0 = utility.check_mem_usage()/1000
         print "[Initial RAM Consumption:"+str(mem_0)+"Kb]"
-
-        ad = AudioData('/media/root/CoopersDB/MUSIC/Disturbed/deify.mp3')
+        ad = AudioData('/beastly.wav')
 
         # Check on RAM consumption
         print "** " + str((utility.check_mem_usage()-mem_0)/1000)+\
               "Kb of Additional RAM Being Used**"
+
         # Play it and clean up
         ad.play_audio()
         ad.destroy()
@@ -67,9 +90,8 @@ def main():
         target = sys.argv[1]
         mem_0 = utility.check_mem_usage() / 1000
         print "[Initial RAM Consumption:" + str(mem_0) + "Kb]"
-
         ad = AudioData(target)
-
+        ad.convert_and_move()
         # Play it and clean up
         ad.display_audio_info()
         ad.destroy()
