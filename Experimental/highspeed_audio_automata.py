@@ -1,7 +1,6 @@
-import matplotlib.pyplot as plt
-import numpy as np
+import matplotlib.pyplot as plt, matplotlib.animation as animation
+import numpy as np, scipy.ndimage as ndi
 from scipy.io import wavfile
-from scipy import signal
 import os, sys, utility
 
 
@@ -21,7 +20,22 @@ class AudioData:
             exit(0)
         self.source = path_to_file
         self.data = self.load_audio_data()
-        self.pre_process_audio()
+        fft_space, fft_space_2 = self.pre_process_audio()
+        print str(len(fft_space)) + " Frames"
+        print str(len(fft_space_2)) + " Frames"
+        self.visualize(fft_space, 300, True)
+
+    @staticmethod
+    def visualize(frames, frame_rate, color):
+        f = plt.figure()
+        film = []
+        for frame in frames:
+            if color:
+                film.append([plt.imshow(np.array(frame))])
+            else:
+                film.append([plt.imshow(frame, 'gray_r')])
+        a = animation.ArtistAnimation(f, film, interval=frame_rate,blit=True,repeat_delay=900)
+        plt.show()
 
     def convert_and_move(self):
         song_name = self.source.split('/')[len(self.source.split('/'))-1]
@@ -57,34 +71,75 @@ class AudioData:
         print "Data Shape: "+str(self.data['data'].shape)
 
     def pre_process_audio(self):
-        ch1 = np.array(self.data['data'][:, 0])
-        ch2 = np.array(self.data['data'][:, 1])
-        mono = np.zeros((ch1.shape[0], 2))
-        mono[:, 0] = ch1
-        mono[:, 1] = ch2
-        print mono.shape
-
+        frames = []
+        animated = []
         # Create a sliding buffer of 1s windows
-        buff_sz = 48000
-        N = np.array(mono).shape[0]/buff_sz
-        print N
+        buff = 89600
+        audio = self.data['data']
+        N = np.array(audio[:,0]).shape[0]/buff
+        for i in range(N):
+            s1 = np.array(audio[0+i*buff:buff/2+i*buff,0])
+            s2 = np.array(audio[0+i*buff:buff/2+i*buff,1])
+            frame = np.zeros((len(s1),2))
+            frame[:,0] = np.log10(np.abs(np.fft.fft(s1)))
+            frame[:,1] = np.log10(np.abs(np.fft.fft(s2)))
+            frames.append(np.array(frame).reshape(280,320))
+            for image in self.automatize(np.array(frame).reshape(280,320),5):
+                animated.append(image)
+        return animated, frames
+
+    def automatize(self,fft_space, depth):
+        f0 = [[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[0,0,0,0,0],[0,0,0,0,0]]
+        f1 = [[0,0,0,0,0],[0,1,1,1,0],[0,1,1,1,0],[0,1,1,1,0],[0,0,0,0,0]]
+        b0 = [[2,2,2,2,2],[2,1,1,1,2],[2,1,0,1,2],[2,1,1,1,2],[2,2,2,2,2]]
+
+        '''
+        frame = fft_space.pop()
+        test = ndi.convolve(frame, b0)
+        f, ax = plt.subplots(1, 2, sharex=True, sharey=True)
+        ax[0].imshow(frame)
+        ax[0].set_title('original clip')
+        ax[1].imshow(test)
+        ax[1].set_title('filtered clip')
+        plt.show()
+        '''
+
+        modified_reel = []
+        for i in range(depth):
+            dims = np.array(fft_space).shape
+            space = ndi.convolve(np.array(fft_space), f0)
+            modified_reel.append(space)
+            try:
+                ii = 0
+                for cell in space.flatten():
+                    if cell > 100:
+                        space[ii] -= 10
+                    if 200 < cell < 100:
+                        space[ii] == 10
+                    ii += 1
+            except IndexError:
+                continue
+
+        return modified_reel
 
 
 
 def main():
+    song_name = '/beastly.wav'
+    song_name2 = '/wait.wav'
     if '-demo' in sys.argv:
         # Determine initial Memory Overhead
         mem_0 = utility.check_mem_usage()/1000
         print "[Initial RAM Consumption:"+str(mem_0)+"Kb]"
-        ad = AudioData('/beastly.wav')
+        ad = AudioData(song_name2)
 
         # Check on RAM consumption
         print "** " + str((utility.check_mem_usage()-mem_0)/1000)+\
               "Kb of Additional RAM Being Used**"
 
         # Play it and clean up
-        ad.play_audio()
-        ad.destroy()
+        # ad.play_audio()
+        # ad.destroy()
     else:
         # Determine initial Memory Overhead
         target = sys.argv[1]
