@@ -123,7 +123,6 @@ class AudioData:
         return modified_reel
 
 
-
 def main():
     song_name = '/beastly.wav'
     song_name2 = '/wait.wav'
