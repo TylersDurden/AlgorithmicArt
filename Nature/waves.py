@@ -57,8 +57,8 @@ class Medium:
 
 
 def main():
-    gas = Medium(1000, 120)
-    gas.wiggle(40)
+    gas = Medium(800, 100)
+    gas.wiggle(40, False)
 
 
 if __name__ == '__main__':
