@@ -20,7 +20,7 @@ class Medium:
             state[point[0], point[1]] = 1
         return state
 
-    def wiggle(self, strength):
+    def wiggle(self, strength, trails):
         t0 = time.time()
         movements = list(np.random.randint(1, 10, self.n_particles*strength))
         motion = []
@@ -42,7 +42,8 @@ class Medium:
                                   8: [pos[0], pos[1] + 1],
                                   9: [pos[0] + 1, pos[1] + 1]}
                     if cell > 0:
-                        state[pos[1], pos[0]] = 0
+                        if not trails:
+                            state[pos[1], pos[0]] = 0
                         next_pos = directions[movements.pop()]
                         state[next_pos[1], next_pos[0]] = 1
                 except IndexError:
