@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt, matplotlib.animation as animation
 import numpy as np, scipy.ndimage as ndi
 from scipy.io import wavfile
 import os, sys, utility
+from threading import Thread
 
 
 class AudioData:
@@ -9,6 +10,7 @@ class AudioData:
     source = ''
     title = ''
     data = {}
+    fft_space = [[[]]]
 
     def __init__(self, path_to_file):
         try:
@@ -20,13 +22,11 @@ class AudioData:
             exit(0)
         self.source = path_to_file
         self.data = self.load_audio_data()
-        fft_space, fft_space_2 = self.pre_process_audio()
-        print str(len(fft_space)) + " Frames"
-        print str(len(fft_space_2)) + " Frames"
-        self.visualize(fft_space, 300, True)
+        self.fft_space, fft_space_2 = self.pre_process_audio()
+        #self.visualize(fft_space, 300, True)
 
     @staticmethod
-    def visualize(frames, frame_rate, color):
+    def visualize(frames, frame_rate, color, audio_stream_thread):
         f = plt.figure()
         film = []
         for frame in frames:
@@ -83,26 +83,15 @@ class AudioData:
             frame = np.zeros((len(s1),2))
             frame[:,0] = np.log10(np.abs(np.fft.fft(s1)))
             frame[:,1] = np.log10(np.abs(np.fft.fft(s2)))
-            frames.append(np.array(frame).reshape(280,320))
-            for image in self.automatize(np.array(frame).reshape(280,320),5):
-                animated.append(image)
-        return animated, frames
+            frames.append(np.rot90(np.array(frame).reshape(280,320),1))
+            # for image in self.automatize(np.array(frame).reshape(280,320),5):
+            #     animated.append(image)
+        return frames, animated
 
     def automatize(self,fft_space, depth):
         f0 = [[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[0,0,0,0,0],[0,0,0,0,0]]
         f1 = [[0,0,0,0,0],[0,1,1,1,0],[0,1,1,1,0],[0,1,1,1,0],[0,0,0,0,0]]
         b0 = [[2,2,2,2,2],[2,1,1,1,2],[2,1,0,1,2],[2,1,1,1,2],[2,2,2,2,2]]
-
-        '''
-        frame = fft_space.pop()
-        test = ndi.convolve(frame, b0)
-        f, ax = plt.subplots(1, 2, sharex=True, sharey=True)
-        ax[0].imshow(frame)
-        ax[0].set_title('original clip')
-        ax[1].imshow(test)
-        ax[1].set_title('filtered clip')
-        plt.show()
-        '''
 
         modified_reel = []
         for i in range(depth):
@@ -123,7 +112,6 @@ class AudioData:
         return modified_reel
 
 
-
 def main():
     song_name = '/beastly.wav'
     song_name2 = '/wait.wav'
@@ -131,12 +119,15 @@ def main():
         # Determine initial Memory Overhead
         mem_0 = utility.check_mem_usage()/1000
         print "[Initial RAM Consumption:"+str(mem_0)+"Kb]"
+
         ad = AudioData(song_name2)
+        t1 = Thread(target=ad.play_audio())
+        Thread(target=ad.visualize(ad.fft_space, 4e00, True, t1)).start()
 
         # Check on RAM consumption
         print "** " + str((utility.check_mem_usage()-mem_0)/1000)+\
               "Kb of Additional RAM Being Used**"
-
+        t1.start()
         # Play it and clean up
         # ad.play_audio()
         # ad.destroy()
