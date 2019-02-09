@@ -6,7 +6,7 @@ static image which is the result of an algorithmic
 design. 
 
 # Nature
-### * Fractal Fire
+## Fractal Fire
 Generate fractal patterns with cellular automata that evolve from initial states 
 like a solid square or a rectange(```python fractal_fire.py -coal ```). The location of this solid will greatly shape
 the pattern created. 
@@ -17,18 +17,14 @@ builds this state:
 Which will eventually turn into:
 ![blazing](https://raw.githubusercontent.com/TylersDurden/AlgorithmicArt/master/Nature/images/pattern.png)
 
-### * Gravity 
+## Gravity 
 Accumulate celestial bodies in space over time with diffusion limited aggregation. 
 ![galactic](https://raw.githubusercontent.com/TylersDurden/AlgorithmicArt/master/Nature/images/gen_galactic.png)
 
-###* Waves
+## Waves
 This simulates hundreds of autonomous fireflies flying around. 
 
 # Cellular
-### * GOL
-
-###*
-
+## GOL
 # Classic
-
 #imG
