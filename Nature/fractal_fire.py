@@ -61,7 +61,7 @@ def build_log(dims, isShown):
 def main():
     spark = [[2, 2, 2], [2, 1, 2], [2, 2, 2]]
     nFrames = 220
-    gas = build_log([100, 100])
+    gas = build_log([100, 100], False)
 
     if '-coal' in sys.argv:
         coal = np.zeros((200, 200))
@@ -75,7 +75,7 @@ def main():
 
     if '-log' in sys.argv:
         s0 = time.time()
-        flames = burn(gas, nFrames, spark, True)
+        flames = burn(gas, nFrames, spark)
         print str(nFrames) + " Frame Simulation finished [" + str(time.time() - s0) + "s]"
         render(flames, False, 70)
 

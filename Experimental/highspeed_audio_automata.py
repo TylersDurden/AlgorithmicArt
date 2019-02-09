@@ -130,7 +130,7 @@ def main():
         # Determine initial Memory Overhead
         mem_0 = utility.check_mem_usage()/1000
         print "[Initial RAM Consumption:"+str(mem_0)+"Kb]"
-        ad = AudioData(song_name2)
+        ad = AudioData(song_name)
 
         # Check on RAM consumption
         print "** " + str((utility.check_mem_usage()-mem_0)/1000)+\
