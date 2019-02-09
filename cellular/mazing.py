@@ -58,7 +58,14 @@ def crawler(density,ngenerations):
                [2, 2, 2, 1, 2, 2, 2]]
 
     # Run the simulation using the seed and filter created above
-    render(simulate(ngenerations, filter1, seed), 100)
+    sim = simulate(ngenerations, filter1, seed)
+    render(sim, 100)
+    f,ax = plt.subplots(1,2)
+    ax[0].imshow(seed, 'gray_r')
+    ax[0].set_title('Initial State')
+    ax[1].imshow(sim.pop(), 'gray')
+    ax[1].set_title('Final State')
+    plt.show()
 
 
 def main():

@@ -25,6 +25,12 @@ Accumulate celestial bodies in space over time with diffusion limited aggregatio
 This simulates hundreds of autonomous fireflies flying around. 
 
 # Cellular
+
+## Mazing 
+Starting from an initially random state, the program attempts to build a maze like structure. 
+Running ```python mazing.py``` will run through a series of increasingly sparser initially states
+of randomly distributed points. 
+![Example_Maze](https://raw.githubusercontent.com/TylersDurden/AlgorithmicArt/master/cellular/images/maze.png)
 ## GOL
 # Classic
 #imG
