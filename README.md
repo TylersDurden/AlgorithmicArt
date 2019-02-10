@@ -45,5 +45,5 @@ so instead pockets of somewhat orderly grid structures are built out of fragment
 
 # Classic
 
-[](https://raw.githubuser.content.com/TylersDurden/AlgorithmicArt/master/Classic/images/mosaic.mp4)
+[mosaic](https://raw.githubuser.content.com/TylersDurden/AlgorithmicArt/master/Classic/images/mosaic.mp4)
 #imG
