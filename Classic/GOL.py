@@ -1,14 +1,19 @@
 import matplotlib.pyplot as plt, matplotlib.animation as animation
 import numpy as np, scipy.ndimage as ndi, time, resource, sys
+from matplotlib.animation import FFMpegWriter
 
 
-def render(matrices, speedOfLife):
+def render(matrices, speedOfLife, save, fileNameOut):
     f = plt.figure()
     reel = []
     for matrix in matrices:
         frame = plt.imshow(matrix,'gray')
         reel.append([frame])
     a = animation.ArtistAnimation(f, reel, interval=speedOfLife,blit=True,repeat_delay=1000)
+    if save:
+        frame_rate = speedOfLife
+        writer = FFMpegWriter(fps=frame_rate, metadata=dict(artist='Me'), bitrate=1800)
+        a.save(fileNameOut, writer=writer)
     plt.show()
 
 
@@ -24,7 +29,7 @@ def initialize_life():
     return initial
 
 
-def run(nGenerations, speed, seed):
+def run(nGenerations, speed, seed, title):
     neighbors = [[1, 1, 1],
                  [1, 0, 1],
                  [1, 1, 1]]
@@ -50,9 +55,10 @@ def run(nGenerations, speed, seed):
         gen += 1
         seed = nextState.reshape((seed.shape[0], seed.shape[1]))
     # Animate the Game of Life Simulation!
-    render(generations, speed)
+    render(generations, speed, True, title)
     print "Finished Simulating" + str(nGenerations)+\
           " [" + str(time.time() - start) + "s Elapsed]"
+    return generations
 
 
 def check_mem_usage():
@@ -67,7 +73,7 @@ def main():
         initial_state = initialize_life()
         # Run the Simulation
         run(int(input('Enter Number of Generations to Simulate: ')),
-            int(input('Enter Speed of Life [0-100]:\n') * 100 / 100), initial_state)
+            int(input('Enter Speed of Life [0-100]:\n') * 100 / 100), initial_state, "GOL.mp4")
         print str(float(100 * check_mem_usage()) / 100000) + " Kb of RAM Used"
 
     ''' Alternatively, you can run some interesting preconfigured initial states'''
@@ -78,7 +84,7 @@ def main():
         initial_state = np.zeros((150,150))
         # Create a simple box
         initial_state[50:100,50:100] = 1
-        run(100,50,initial_state)
+        run(100,50,initial_state, 'box')
         print str(float(100 * check_mem_usage()) / 100000) + " Kb of RAM Used"
 
     # Checkerboard initial state
@@ -112,7 +118,7 @@ def main():
         plt.show()
 
         # Run the Simulation
-        run(100,75, initial_state)
+        run(100,75, initial_state, 'spots')
         print str(float(100 * check_mem_usage()) / 100000) + " Kb of RAM Used"
 
 
