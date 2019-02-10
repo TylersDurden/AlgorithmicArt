@@ -30,13 +30,18 @@ This simulates hundreds of autonomous fireflies flying around.
 Starting from an initially random state, the program attempts to build a maze like structure. 
 Running ```python mazing.py``` will run through a series of increasingly sparser initially states
 of randomly distributed points. 
+
 ![Example_Maze](https://raw.githubusercontent.com/TylersDurden/AlgorithmicArt/master/cellular/images/maze.png)
+
 Eventually the sparsity becomes so great the crawling maze kernel can't actually reach the entirety of
 the seed state. These are probably the more fascinating simulations to observe. 
+
 ![sparse_maze](https://raw.githubusercontent.com/TylersDurden/AlgorithmicArt/master/cellular/images/sparser_maze.png)
+
 Even more frenzied are the initial seeds that are **mostly empty**. This ensures that no mazes can really be built,
 so instead pockets of somewhat orderly grid structures are built out of fragmented sections on a chaotic bit plane. 
-![Animated](https://raw.githubusercontent.com/TylersDurden/AlgorithmicArt/master/cellular/images/mazy.mp4)
+
+[Animated](https://raw.githubusercontent.com/TylersDurden/AlgorithmicArt/master/cellular/images/mazy.mp4)
 ## GOL
 # Classic
 #imG
