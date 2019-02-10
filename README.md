@@ -42,6 +42,8 @@ Even more frenzied are the initial seeds that are **mostly empty**. This ensures
 so instead pockets of somewhat orderly grid structures are built out of fragmented sections on a chaotic bit plane. 
 
 [Animated](https://raw.githubusercontent.com/TylersDurden/AlgorithmicArt/master/cellular/images/mazy.mp4)
-## GOL
+
 # Classic
+
+[](https://raw.githubuser.content.com/TylersDurden/AlgorithmicArt/master/Classic/images/mosaic.mp4)
 #imG

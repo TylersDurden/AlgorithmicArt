@@ -73,10 +73,10 @@ def crawler(density,ngenerations):
     return sim
 
 def main():
-    #crawler(75, 95)
-    #crawler(82, 75)
-    #crawler(85, 150)
-    #crawler(95, 150)
+    crawler(75, 95)
+    crawler(82, 75)
+    crawler(85, 150)
+    crawler(95, 150)
     sim = crawler(100, 150)
     render(sim,50,True,'mazy.mp4')
 
