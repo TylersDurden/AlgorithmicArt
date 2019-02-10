@@ -49,4 +49,5 @@ Conway's game of Life:
 [GOL](https://raw.githubusercontent.con/TylersDurden/AlgorithmicArt/master/Classic/images/GOL.mp4)
 Cellular Automata Fractal Art: 
 [mosaic](https://raw.githubuser.content.com/TylersDurden/AlgorithmicArt/master/Classic/images/mosaic.mp4)
-#imG
+
+# imG
