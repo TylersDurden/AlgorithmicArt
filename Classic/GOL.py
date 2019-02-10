@@ -6,7 +6,7 @@ def render(matrices, speedOfLife):
     f = plt.figure()
     reel = []
     for matrix in matrices:
-        frame = plt.imshow(matrix,'gray_r')
+        frame = plt.imshow(matrix,'gray')
         reel.append([frame])
     a = animation.ArtistAnimation(f, reel, interval=speedOfLife,blit=True,repeat_delay=1000)
     plt.show()

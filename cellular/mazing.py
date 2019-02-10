@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt, matplotlib.animation as ani
+from matplotlib.animation import FFMpegWriter
 import sys, os, resource, numpy as np, scipy.ndimage as ndi
 
 
@@ -6,16 +7,19 @@ def check_mem_usage():
     return resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
 
 
-def render(matrices, speedOfLife):
+def render(matrices, speedOfLife, save, fileNameOut):
     f = plt.figure()
     reel = []
     for matrix in matrices:
         frame = plt.imshow(matrix,'gray_r')
         reel.append([frame])
     a = ani.ArtistAnimation(f, reel, interval=speedOfLife,blit=True,repeat_delay=1000)
-    plt.show()
     ''' TODO: Add save2gif ability '''
-
+    frame_rate = speedOfLife
+    if save:
+        writer = FFMpegWriter(fps=frame_rate, metadata=dict(artist='Me'), bitrate=1800)
+        a.save(fileNameOut, writer=writer)
+    plt.show()
 
 def simulate(ngen, filter, seed):
     gen = 0
@@ -59,21 +63,22 @@ def crawler(density,ngenerations):
 
     # Run the simulation using the seed and filter created above
     sim = simulate(ngenerations, filter1, seed)
-    render(sim, 100)
+    # render(sim, 100)
     f,ax = plt.subplots(1,2)
     ax[0].imshow(seed, 'gray_r')
     ax[0].set_title('Initial State')
     ax[1].imshow(sim.pop(), 'gray')
     ax[1].set_title('Final State')
     plt.show()
-
+    return sim
 
 def main():
-    crawler(75, 95)
-    crawler(82, 75)
-    crawler(85, 150)
-    crawler(95, 150)
-    crawler(100, 150)
+    #crawler(75, 95)
+    #crawler(82, 75)
+    #crawler(85, 150)
+    #crawler(95, 150)
+    sim = crawler(100, 150)
+    render(sim,50,True,'mazy.mp4')
 
 
 if __name__ == '__main__':
