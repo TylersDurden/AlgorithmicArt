@@ -1,6 +1,6 @@
 import sys, time, numpy as np, scipy.ndimage as ndi
 import matplotlib.pyplot as plt, matplotlib.animation as animation
-
+import utility
 
 def render(matrices, isColor, speed):
     reel = []
@@ -66,18 +66,28 @@ def main():
     if '-coal' in sys.argv:
         coal = np.zeros((200, 200))
         coal[50:150, 50:150] = 1
-        render(burn(coal, nFrames, spark), False, 70)
+        small_fire = burn(coal, nFrames, spark)
+        if '-save' in sys.argv:
+            utility.bw_render(small_fire,70, True,'large_coal.mp4')
+        else:
+            render(small_fire, False, 70)
 
         coal = np.zeros((200, 200))
         coal[75:100, 75:100] = 1
-
-        render(burn(coal, nFrames, spark), False, 70)
+        fire = burn(coal, nFrames, spark)
+        if '-save' in sys.argv:
+            utility.bw_render(fire,70, True,'small_coal.mp4')
+        else:
+            render(fire, False, 70)
 
     if '-log' in sys.argv:
         s0 = time.time()
         flames = burn(gas, nFrames, spark)
         print str(nFrames) + " Frame Simulation finished [" + str(time.time() - s0) + "s]"
-        render(flames, False, 70)
+        if '-save' in sys.argv:
+            utility.bw_render(flames,70,True,'fractalFireLog.mp4')
+        else:
+            render(flames, False, 70)
 
 
 if __name__ == '__main__':
