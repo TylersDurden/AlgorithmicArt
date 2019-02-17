@@ -65,7 +65,7 @@ def main():
     t0 = time.time()
     ''' 4 is highly complex  but fast '''
     history_5 = simulate(density=15000,dims=[350, 350], thresh=4, t0=t0)
-    utility.bw_render(history_5, 100, True, 'unrestrained_decay.mp4')
+    utility.bw_render(history_5, 250, True, 'unrestrained_decay.mp4')
 
 
 
