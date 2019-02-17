@@ -41,7 +41,7 @@ the seed state. These are probably the more fascinating simulations to observe.
 Even more frenzied are the initial seeds that are **mostly empty**. This ensures that no mazes can really be built,
 so instead pockets of somewhat orderly grid structures are built out of fragmented sections on a chaotic bit plane. 
 
-![Animated](https://www.youtube.com/watch?v=wTvIug3fsuY)
+[Animated](https://www.youtube.com/watch?v=wTvIug3fsuY)
 
 # Classic
 ## Game of Life **[GOL]**
