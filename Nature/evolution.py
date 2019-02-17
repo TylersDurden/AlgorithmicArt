@@ -1,5 +1,4 @@
 import numpy as np, scipy.ndimage as ndi
-import matplotlib.pyplot as plt
 import utility, time
 
 
@@ -37,6 +36,8 @@ class Evolve:
         for cell in world.flatten():
             if cell >= self.k_threshold and nextstate[ii]==0:
                 nextstate[ii] = 1
+            if cell < self.k_threshold and nextstate[ii] == 1:
+                nextstate[ii] = 1
             ii += 1
         self.state = nextstate.reshape(np.array(self.state).shape)
 
@@ -51,9 +52,9 @@ def create_seed_image(density, dimensions):
     return state, pts
 
 
-def simulate(density, dims, thresh, t0):
+def simulate(density, dims, thresh, t0, kernel):
     test_img, seed_pts = create_seed_image(density, dims)
-    evo = Evolve(200, test_img, [[1, 1, 1], [1, 1, 1], [1, 1, 1]])
+    evo = Evolve(250, test_img, kernel)
     evo.set_target(False, thresh)
     history = evo.evolve()
     print '\033[33m\033[1m FINISHED SIMULATION \033[0m\033[1m[' + \
@@ -64,8 +65,10 @@ def simulate(density, dims, thresh, t0):
 def main():
     t0 = time.time()
     ''' 4 is highly complex  but fast '''
-    history_5 = simulate(density=15000,dims=[350, 350], thresh=4, t0=t0)
-    utility.bw_render(history_5, 250, True, 'unrestrained_decay.mp4')
+    f0 = [[1,1,1],[1,1,1],[1,1,1]]
+    f1 = [[1, 1, 1], [1, 2, 1], [1, 1, 1]]
+    history_5 = simulate(density=10000,dims=[350, 350], thresh=4, t0=t0, kernel=f1)
+    utility.bw_render(history_5, 100, False, 'unrestrained_decay.mp4')
 
 
 
