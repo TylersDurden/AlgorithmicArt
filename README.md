@@ -6,6 +6,10 @@ static image which is the result of an algorithmic
 design. 
 
 # Nature
+
+## Evolution
+Fractal Bacterial growth, and some water like annealing. 
+
 ## Fractal Fire
 Generate fractal patterns with cellular automata that evolve from initial states 
 like a solid square or a rectange(```python fractal_fire.py -coal ```). The location of this solid will greatly shape
