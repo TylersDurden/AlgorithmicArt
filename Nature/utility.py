@@ -2,11 +2,21 @@ import resource, matplotlib.pyplot as plt, matplotlib.animation as animation, nu
 from matplotlib.animation import FFMpegWriter
 
 
+def show(matrix, name, isColor):
+    f = plt.figure()
+    if isColor:
+        plt.imshow(matrix)
+    else:
+        plt.imshow(matrix, 'gray')
+    plt.title(name)
+    plt.show()
+
+
 def bw_render(frames, frame_rate, save, fileNameOut):
     f = plt.figure()
     film = []
     for frame in frames:
-        film.append([plt.imshow(frame, 'gray')])
+        film.append([plt.imshow(frame, 'gray_r')])
     a = animation.ArtistAnimation(f, film, interval=frame_rate, blit=True, repeat_delay=900)
     if save:
         writer = FFMpegWriter(fps=frame_rate, metadata=dict(artist='Me'), bitrate=1800)
