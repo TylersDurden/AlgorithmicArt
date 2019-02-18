@@ -20,10 +20,15 @@ like a solid square or a rectange(```python fractal_fire.py -coal ```). The loca
 the pattern created. 
 
 For Example take the ``python fractal_fire.py -log`` command's output. Initially it
-builds this state:
+builds this state:    [fractal_firelog_youtube](https://youtu.be/fo_jFVEpBcQ)
 ![fire_place](https://raw.githubusercontent.com/TylersDurden/AlgorithmicArt/master/Nature/images/fireplace.png)
 Which will eventually turn into:
 ![blazing](https://raw.githubusercontent.com/TylersDurden/AlgorithmicArt/master/Nature/images/pattern.png)
+
+You can also run ```python fractal_fire.py -coal```, which seeds the same algorithm instead
+with an initial state that has a solid block in the middle of some empty space. Here's a video
+of it in action on youtube: 
+[fractal_coal_youtube](https://youtu.be/t-aBd_ns2vs)
 
 ## Gravity 
 Accumulate celestial bodies in space over time with diffusion limited aggregation. 
