@@ -8,7 +8,11 @@ design.
 # Nature
 
 ## Evolution
-Fractal Bacterial growth, and some water like annealing. 
+Fractal Bacterial growth. 
+[fractal_bacteria](https://www.youtube.com/watch?v=pnDPwoULIfM&feature=youtu.be)
+
+Some water like annealing
+[anneal](https://youtu.be/N-ijMS1R2_4)
 
 ## Fractal Fire
 Generate fractal patterns with cellular automata that evolve from initial states 
