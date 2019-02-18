@@ -13,7 +13,13 @@ class Evolve:
         self.lifetime = n_generation
         self.state = seed
         self.kernel = filter
-        # self.set_target()
+
+    def set_target(self, manual, val):
+        if manual:
+            self.k_threshold = int(input('Enter the threshold to use:'))
+            print np.array(self.kernel)
+        else:
+            self.k_threshold = val
 
     def evolve(self, agent, usingAI):
         history = []
@@ -27,13 +33,6 @@ class Evolve:
             # Update State
             self.run()
         return history
-
-    def set_target(self, manual, val):
-        if manual:
-            self.k_threshold = int(input('Enter the threshold to use:'))
-            print np.array(self.kernel)
-        else:
-            self.k_threshold = val
 
     def run(self):
         world = ndi.convolve(self.state, self.kernel)
@@ -110,11 +109,11 @@ def main():
 
     if '-bleed' in sys.argv:
         history_5 = simulate(density=10000, dims=[320, 320], thresh=4, t0=t0, kernel=f0, ai=False)
-        utility.bw_render(history_5, 100, True, 'decay.mp4')
+        utility.bw_render(history_5, 100, False, 'decay.mp4')
         exit(0)
     if '-bacterial':
         history_5 = simulate(density=20000, dims=[350, 350], thresh=4, t0=t0, kernel=f1, ai=True)
-        utility.color_render(history_5, 65, True, 'organisms.mp4')
+        utility.color_render(history_5, 65, False , 'organisms.mp4')
         exit(0)
 
 
