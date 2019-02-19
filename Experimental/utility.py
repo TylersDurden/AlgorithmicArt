@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt, matplotlib.animation as animation
+from matplotlib.animation import FFMpegWriter
 import sys, os, numpy as np, scipy.ndimage as ndi, resource
 
 
@@ -11,6 +12,18 @@ def swap(fname, destroy):
     return data
 
 
+def bw_render(frames, frame_rate, save, fileNameOut):
+    f = plt.figure()
+    film = []
+    for frame in frames:
+        film.append([plt.imshow(frame, 'gray_r')])
+    a = animation.ArtistAnimation(f, film, interval=frame_rate, blit=True, repeat_delay=900)
+    if save:
+        writer = FFMpegWriter(fps=frame_rate, metadata=dict(artist='Me'), bitrate=1800)
+        a.save(fileNameOut, writer=writer)
+    plt.show()
+
+
 def render(reel, frame_rate, is_color, show):
     f = plt.figure()
     frames = []
@@ -20,7 +33,6 @@ def render(reel, frame_rate, is_color, show):
         else:
             frames.append([plt.imshow(frame,'gray_r')])
     a = animation.ArtistAnimation(f,frames,interval=frame_rate,blit=True,repeat_delay=500)
-
     if show:
         plt.show()
 
@@ -82,3 +94,28 @@ def check_mem_usage():
 
 def random_seed(width, height, bit_depth):
     return np.random.random_integers(0,bit_depth,width*height).reshape((width, height))
+
+
+def draw_centered_circle(canvas, radius, show):
+    cx = canvas.shape[0]/2
+    cy = canvas.shape[1]/2
+    for x in np.arange(cx - radius, cx + radius, 1):
+        for y in np.arange(cy - radius, cy + radius, 1):
+            r =np.sqrt((x-cx)*(x-cx) + ((cy-y)*(cy-y)))
+
+            if r <= radius:
+                canvas[x, y] = 1
+    if show:
+        plt.imshow(canvas, 'grayr')
+        plt.show()
+    return canvas
+
+
+def draw_centered_box(canvas, size, value, show):
+    cx = canvas.shape[0]/2
+    cy = canvas.shape[1]/2
+    canvas[cx-size:cx+size, cy-size:cy+size] = value
+    if show:
+        plt.imshow(canvas, 'gray')
+        plt.show()
+    return canvas

@@ -84,7 +84,7 @@ def main():
     Simulator(length=100, n_trials=10, dims=[250, 250],
               bitdepth=2, israndom=True, hyperparams={'k_thresh': 2})
 
-    
+
 
 if __name__ == '__main__':
     main()
