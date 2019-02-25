@@ -1,5 +1,6 @@
 import resource, os, matplotlib.pyplot as plt, matplotlib.animation as animation, numpy as np
 from matplotlib.animation import FFMpegWriter
+import scipy.ndimage as ndi
 
 
 def swap(fname, destroy):
@@ -145,9 +146,15 @@ def draw_centered_circle(canvas, radius, show):
     return canvas
 
 
-def load_local_images(img_root):
-    lib = img_root.decode('hex')
-    cmd = "p=$PWD; cd /media; find -name '*.jpg' | cut -b 2- >> $p/pics.txt; cd $p;"
-    os.system(cmd)
-    pics = swap('pics.txt', True)
-    return pics
+def find_local_images():
+    os.system('locate *.jpg* >> command.txt')
+    jpegs = swap('command.txt', True)
+    os.system('locate *.png* >> command.txt')
+    pngs = swap('command.txt', True)
+    return jpegs, pngs
+
+
+def sharpen(image, level):
+    imat = np.array(image)
+    kernel = [[0,0,0],[0,level,0],[0,0,0]]
+    return ndi.convolve(imat,kernel)
